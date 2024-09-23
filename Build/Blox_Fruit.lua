@@ -366,26 +366,6 @@ local _home = Window:MakeTab("Home") do
     Funcs:AddToggle(_config, "Auto Use Race V4", "", false)
   end
 
-  local _server = _home:Section({["Title"] = "Server Games", ["Content"] = ""}) do
-    Funcs:AddDropdown(_server, "Count Player", false, {"1","2","3","4","5","6","7","8","9","10","11","12"}, {"5"})
-    Funcs:AddButton(_server, "Hop Server On Count Player", "", function()
-      _env.ServerHop("Singapore", tonumber(LuresHub["Count Player"]))
-    end)
-    Funcs:AddButton(_server, "Rejoin", "", function()
-      TeleportService:Teleport(game.PlaceId, Player)
-    end)
-    _server:Seperator("Status Server")
-    local _ServerCount = _server:Paragraph({["Title"] = "Server Count", ["Content"] = "" })
-    task.spawn(function()
-      while task.wait(2) do
-        _ServerCount:Set({
-          ["Title"] = "Server Count",
-          ["Content"] = tostring(#Players:GetPlayers()) .. "/12"
-        })
-      end
-    end)
-  end
-
   local _stats = _home:Section({["Title"] = "Get Stats", ["Content"] = ""}) do
     _stats:Seperator("Config")
     Funcs:AddDropdown(_stats, "Point Stats", false, {"1", "5", "10", "15", "20", "25", "30", "35", "40", "50"}, {"1"})
@@ -416,13 +396,7 @@ local _home = Window:MakeTab("Home") do
     _misc:Seperator("Redeem")
     Funcs:AddButton(_misc, "Redeem Code", "", function()
       for _, code in next, _env.CodesRedeem do
-        Remotes.Redeem:InvokeServer((function()
-          if type(code) == "string" then
-            return code
-          else
-            return tostring(code)
-          end
-        end)())
+        Remotes.Redeem:InvokeServer(type(code) == "string" and code or tostring(code))
       end
     end)
     _misc:Seperator("Water")
@@ -440,6 +414,12 @@ local _home = Window:MakeTab("Home") do
       if _isfile("Lures Hub") then
         _delfile("Lures Hub")
       end
+    end)
+    Funcs:AddButton(_settings, "Hop Server ", "", function()
+      _env.ServerHop("Singapore", 7)
+    end)
+    Funcs:AddButton(_settings, "Rejoin", "", function()
+      TeleportService:Teleport(game.PlaceId, Player)
     end)
   end
 end
