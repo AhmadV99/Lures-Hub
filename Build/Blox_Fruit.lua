@@ -357,7 +357,6 @@ local _home = Window:MakeTab("Home") do
     Funcs:AddDropdown(_config, "Bring Mob Radius", false, {"100", "200", "300", "400", "500"}, {"200"})
     _config:Seperator("Fast Attack")
     Funcs:AddToggle(_config, "Fast Attack", "", true)
-    Funcs:AddDropdown(_config, "Fast Attack Delay", false, {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}, {"0"})
     _config:Seperator("Other")
     Funcs:AddToggle(_config, "Hop if Admin or Staff", "", true)
     Funcs:AddToggle(_config, "Auto Dodge Skill", "", false)
