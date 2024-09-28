@@ -1,8 +1,8 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Lures-Hub/main/Library/V1"))()
 
 local Window = Library:Start({
-  ["Name"] = "Lures Hub | Blox Fruit",
-  ["SaveFolder"] = "Lures Hub"
+  ["Name"] = "Poison Hub | Blox Fruit",
+  ["SaveFolder"] = "Poison Hub"
 })
 
 local Players = game:GetService("Players")
