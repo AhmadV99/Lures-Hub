@@ -319,26 +319,7 @@ local Funcs = {} do
   end
 end
 
-local _home = Window:MakeTab("Home") do
-  local _info = _home:Section({["Title"] = "Information", ["Content"] = ""}) do
-    Funcs:AddButton(_info, "Discord Invite", "Click to copy invite server", function()
-      _setclipboard(Discord)
-    end)
-
-    _info:Seperator("Status")
-
-    local _timeServer = _info:Paragraph({["Title"] = "Time Server", ["Content"] = "" })
-    task.spawn(function()
-      while task.wait(2) do
-        _timeServer:Set({
-          ["Title"] = "Time Server",
-          ["Content"] = tostring(Lighting.TimeOfDay)
-        })
-      end
-    end)
-  end
-
-  local _localplayer = _home:Section({["Title"] = "LocalPlayer", ["Content"] = ""}) do
+local _localplayer = _home:Section({["Title"] = "LocalPlayer", ["Content"] = ""}) do
     Funcs:AddDropdown(_localplayer, "Set WalkSpeed", false, {"100", "200", "300", "400", "500"}, {"300"})
     Funcs:AddToggle(_localplayer, "Enable WalkSpeed", "", false)
     Funcs:AddToggle(_localplayer, "Anti-Knockback", "", false)
@@ -357,12 +338,33 @@ local _home = Window:MakeTab("Home") do
     Funcs:AddDropdown(_config, "Bring Mob Radius", false, {"100", "200", "300", "400", "500"}, {"200"})
     _config:Seperator("Fast Attack")
     Funcs:AddToggle(_config, "Fast Attack", "", true)
+    Funcs:AddDropdown(_config, "Fast Attack Delay", false, {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}, {"0"})
     _config:Seperator("Other")
     Funcs:AddToggle(_config, "Hop if Admin or Staff", "", true)
     Funcs:AddToggle(_config, "Auto Dodge Skill", "", false)
     _config:Seperator("Active Race")
     Funcs:AddToggle(_config, "Auto Use Race V3", "", false)
     Funcs:AddToggle(_config, "Auto Use Race V4", "", false)
+  end
+
+  local _server = _home:Section({["Title"] = "Server Games", ["Content"] = ""}) do
+    Funcs:AddDropdown(_server, "Count Player", false, {"1","2","3","4","5","6","7","8","9","10","11","12"}, {"5"})
+    Funcs:AddButton(_server, "Hop Server On Count Player", "", function()
+      _env.ServerHop("Singapore", tonumber(LuresHub["Count Player"]))
+    end)
+    Funcs:AddButton(_server, "Rejoin", "", function()
+      TeleportService:Teleport(game.PlaceId, Player)
+    end)
+    _server:Seperator("Status Server")
+    local _ServerCount = _server:Paragraph({["Title"] = "Server Count", ["Content"] = "" })
+    task.spawn(function()
+      while task.wait(2) do
+        _ServerCount:Set({
+          ["Title"] = "Server Count",
+          ["Content"] = tostring(#Players:GetPlayers()) .. "/12"
+        })
+      end
+    end)
   end
 
   local _stats = _home:Section({["Title"] = "Get Stats", ["Content"] = ""}) do
@@ -395,7 +397,13 @@ local _home = Window:MakeTab("Home") do
     _misc:Seperator("Redeem")
     Funcs:AddButton(_misc, "Redeem Code", "", function()
       for _, code in next, _env.CodesRedeem do
-        Remotes.Redeem:InvokeServer(type(code) == "string" and code or tostring(code))
+        Remotes.Redeem:InvokeServer((function()
+          if type(code) == "string" then
+            return code
+          else
+            return tostring(code)
+          end
+        end)())
       end
     end)
     _misc:Seperator("Water")
@@ -410,15 +418,9 @@ local _home = Window:MakeTab("Home") do
 
   local _settings = _home:Section({["Title"] = "Settings", ["Content"] = ""}) do
     Funcs:AddButton(_settings, "Reset Script Saver", "", function()
-      if _isfile("Lures Hub") then
-        _delfile("Lures Hub")
+      if _isfile("Speed Hub X") then
+        _delfile("Speed Hub X")
       end
-    end)
-    Funcs:AddButton(_settings, "Hop Server ", "", function()
-      _env.ServerHop("Singapore", 7)
-    end)
-    Funcs:AddButton(_settings, "Rejoin", "", function()
-      TeleportService:Teleport(game.PlaceId, Player)
     end)
   end
 end
